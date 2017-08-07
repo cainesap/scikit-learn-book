@@ -1,19 +1,20 @@
-
-# coding: utf-8
-
 # # Learning Scikit-learn: Machine Learning in Python
 
 # ## IPython Notebook for Chapter 3: Unsupervised Learning - Clustering Handwritten Digits
 
-# _Clustering involves finding groups where all elements in the group are similar, but objects in different groups are not. K-means is the most popular clustering algorithm, because it is very simple and easy to implement and it has shown good performance on different tasks. We will show in this notebook how k-means works using a motivating example, the problem of clustering handwritten digits. At the end of the notebook, we will try other, different, clustering approaches to the same problem _
+# Clustering involves finding groups where all elements in the group are similar, but objects in different groups are not.
+# K-means is the most popular clustering algorithm, because it is very simple and easy to implement and
+# it has shown good performance on different tasks. We will show in this notebook how k-means works using a
+# motivating example, the problem of clustering handwritten digits. At the end of the notebook, we will try other,
+# different, clustering approaches to the same problem.
 # 
 
-# Activate your Virtual Environment: `source bin/activate`. Then install the libraries necessary for this chapter: `pip3 install numpy scikit-learn matplotlib`. Then start up an interactive shell which is matplotlib aware: `ipython --pylab`
+# Activate your Virtual Environment: `source bin/activate`
+# Then install the libraries necessary for this chapter: `pip3 install numpy scikit-learn matplotlib`
+# Then start up an interactive shell which is matplotlib aware: `ipython --pylab`
 
-# Now import numpy, scikit-learn, and pyplot, the Python libraries we will be using in this chapter. Show the versions we will be using (in case you have problems running the notebooks).
-
-# In[1]:
-
+# Now import numpy, scikit-learn, and pyplot, the Python libraries we will be using in this chapter.
+# Show the versions we will be using (in case you have problems running the notebooks).
 
 import sklearn as sk
 import numpy as np
@@ -25,10 +26,8 @@ print('scikit-learn version:', sk.__version__)
 print('matplotlib version:', matplotlib.__version__)
 
 
-# Import the digits dataset (http://scikit-learn.org/stable/auto_examples/datasets/plot_digits_last_image.html) and show some of its instances
-
-# In[2]:
-
+# Import the digits dataset (http://scikit-learn.org/stable/auto_examples/datasets/plot_digits_last_image.html)
+# and show some of its instances
 
 from sklearn.datasets import load_digits
 from sklearn.preprocessing import scale
@@ -52,11 +51,6 @@ print_digits(digits.images, digits.target, max_n=10)
 
 
 # Build training and test set
-
-# In[3]:
-
-
-# Training and test set
 from sklearn.model_selection import train_test_split
 
 number_of_instances=digits.images.shape[0]
@@ -97,10 +91,9 @@ print("n_digits: %d, \t n_samples %d, \t n_features %d"
 
 # ## K-Means
 
-# The main idea behind k-means is to find a partition of data points such that the squared distance between the cluster mean and each point in the cluster is minimized. Note that this method assumes that you know a priori the number of clusters your data should be divided into. Train a KMeans classifier, show the clusters. 
-
-# In[4]:
-
+# The main idea behind k-means is to find a partition of data points such that the squared distance between
+# the cluster mean and each point in the cluster is minimized. Note that this method assumes that you know
+# a priori the number of clusters your data should be divided into. Train a KMeans classifier, show the clusters. 
 
 from sklearn import cluster
 clf = cluster.KMeans(init='k-means++', n_clusters=10, random_state=42)
@@ -109,13 +102,9 @@ print(clf.labels_.shape)
 print(clf.labels_[0:9])
 print_digits(images_train, clf.labels_, max_n=10)
 
-
-# To predict the clusters for training data, we use the usual predict method of the classifier. Predict and show predicted clusters.
-
-# In[5]:
-
-
+# To predict the clusters for training data, we use the usual predict method of the classifier.
 # Predict clusters on testing data
+
 y_pred = clf.predict(X_test)
 
 def print_cluster(images, y_pred, cluster_number):
@@ -126,11 +115,17 @@ def print_cluster(images, y_pred, cluster_number):
 for i in range(10):
      print_cluster(images_test, y_pred, i)
 
-
-# How can we evaluate our performance? Precision and all that stuff does not work, since we have no target classes to compare with. To evaluate, we need to know the "real" clusters, whatever that means. We can suppose, for our example, that each cluster includes every drawing of a certain number, and only that number. Knowing this, we can compute the adjusted Rand index between our cluster assignment and the expected one. The Rand index is a similar measure for accuracy, but it takes into account the fact that classes can have different names in both assignments. That is, if we change class names, the index does not change. The adjusted index tries to deduct from the result coincidences that have occurred by chance. When you have the exact same clusters in both sets, the Rand index equals one, while it equals zero when there are no clusters sharing a data point. Show different performance metrics, compared with "original" clusters (using the knowb number class)
-
-# In[6]:
-
+# How can we evaluate our performance? Precision and all that stuff does not work, since
+# we have no target classes to compare with. To evaluate, we need to know the "real" clusters,
+# whatever that means. We can suppose, for our example, that each cluster includes every
+# drawing of a certain number, and only that number. Knowing this, we can compute the adjusted
+# Rand index between our cluster assignment and the expected one. The Rand index is a similar
+# measure for accuracy, but it takes into account the fact that classes can have different
+# names in both assignments. That is, if we change class names, the index does not change.
+# The adjusted index tries to deduct from the result coincidences that have occurred by
+# chance. When you have the exact same clusters in both sets, the Rand index equals one,
+# while it equals zero when there are no clusters sharing a data point. Show different
+# performance metrics, compared with "original" clusters (using the knowb number class)
 
 from sklearn import metrics
 print("Adjusted rand score:{:.2}".format(metrics.adjusted_rand_score(y_test, y_pred)))
@@ -139,14 +134,12 @@ print("Completeness score: {:.2} ".format(metrics.completeness_score(y_test, y_p
 print("Confusion matrix")
 print(metrics.confusion_matrix(y_test, y_pred))
 
-
-# Draw clusters and centroids (taken from [the scikit-learn tutorial](http://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_digits.html))
-
-# In[7]:
-
+# Draw clusters and centroids (taken from the scikit-learn tutorial
+# http://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_digits.html
 
 from sklearn import decomposition
-# in this case the seeding of the centers is deterministic, hence we run the
+
+# In this case the seeding of the centres is deterministic, hence we run the
 # kmeans algorithm only once with n_init=1
 pca = decomposition.PCA(n_components=2).fit(X_train)
 reduced_X_train = pca.transform(X_train)
@@ -188,18 +181,18 @@ plt.show()
 
 # ## Affinity Propagation
 
-# A typical problem for clustering is that most methods require the number of clusters we want to identify. The general approach to solve this is to try different numbers and let an expert determine which works best using techniques such as dimensionality reduction to visualize clusters. There are also some methods that try to automatically calculate the number of clusters. Scikit-learn includes an implementation of Affinity Propagation, a method that looks for instances that are the most representative of others, and uses them to describe the clusters. Since scikit-learn uses the same function for every algorithm, we just have to fit the training set again:Try now using Affinity Propagation
+# A typical problem for clustering is that most methods require the number of clusters we want to identify.
+# The general approach to solve this is to try different numbers and let an expert determine which works
+# best using techniques such as dimensionality reduction to visualize clusters. There are also some methods
+# that try to automatically calculate the number of clusters. Scikit-learn includes an implementation of
+# Affinity Propagation, a method that looks for instances that are the most representative of others,
+# and uses them to describe the clusters. Since scikit-learn uses the same function for every algorithm,
+# we just have to fit the training set again:Try now using Affinity Propagation
 
-# In[8]:
-
-# Affinity propagation
 aff = cluster.AffinityPropagation()
 aff.fit(X_train)
 print(aff.cluster_centers_indices_.shape)
 
-
-
-# In[9]:
 print_digits(images_train[aff.cluster_centers_indices_], y_train[aff.cluster_centers_indices_], max_n=aff.cluster_centers_indices_.shape[0])
 
 
@@ -207,26 +200,20 @@ print_digits(images_train[aff.cluster_centers_indices_], y_train[aff.cluster_cen
 
 # Yet another clustering method: MeanShift()
 
-# In[10]:
-
-
-#MeanShift
 ms = cluster.MeanShift()
 ms.fit(X_train)
 print(ms.cluster_centers_)
-
-
-# In[11]:
 print(ms.cluster_centers_.shape)
 
 
 # ## Mixture of Gaussian Models
 
-# Finally, we will try a probabilistic approach to clustering, using Gaussian Mixture Models (GMM). We will see, from a procedural view, that it is very similar to k-means, but their theoretical principles are quite different. GMM assumes that data comes from a mixture of finite Gaussian distributions with unknown parameters.
+# Finally, we will try a probabilistic approach to clustering, using Gaussian Mixture Models (GMM). We
+# will see, from a procedural view, that it is very similar to k-means, but their theoretical principles
+# are quite different. GMM assumes that data comes from a mixture of finite Gaussian distributions with
+# unknown parameters.
 
 # We will first use a heldout dataset to estimate covariance type (one of the method parameters)
-
-# In[12]:
 
 from sklearn import mixture
 
@@ -239,16 +226,9 @@ for covariance_type in ['spherical','tied','diag','full']:
     y_pred=gm.predict(X_test_heldout)
     print("Adjusted rand score for covariance={}:{:.2}".format(covariance_type, metrics.adjusted_rand_score(y_test_heldout, y_pred)))
 
-
-# Train!
-
-# In[13]:
-
+# Training
 gm = mixture.GaussianMixture(n_components=n_digits, covariance_type='tied', random_state=42)
 gm.fit(X_train)
-
-
-# In[14]:
 
 # Print train clustering and confusion matrix
 y_pred = gm.predict(X_test)
@@ -260,10 +240,7 @@ for i in range(10):
 print("Confusion matrix")
 print(metrics.confusion_matrix(y_test, y_pred))
 
-
-# Predict!
-
-# In[15]:
+# Predict and plot
 
 pl=plt
 from sklearn import decomposition
@@ -275,16 +252,13 @@ reduced_X_train = pca.transform(X_train)
 h = .01     # point in the mesh [x_min, m_max]x[y_min, y_max].
 
 # Plot the decision boundary. For that, we will asign a color to each
-# Taken from 
 x_min, x_max = reduced_X_train[:, 0].min() + 1, reduced_X_train[:, 0].max() - 1
 y_min, y_max = reduced_X_train[:, 1].min() + 1, reduced_X_train[:, 1].max() - 1
 xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
 
 gm.fit(reduced_X_train)
-#print np.c_[xx.ravel(),yy.ravel()]
 Z = gm.predict(np.c_[xx.ravel(), yy.ravel()])
 Z = Z.reshape(xx.shape)
-# Plot the centroids as a white dot
 centroids = gm.means_
 
 # Put the result into a color plot
