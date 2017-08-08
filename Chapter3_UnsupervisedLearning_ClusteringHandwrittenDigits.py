@@ -1,6 +1,8 @@
 ## Learning Scikit-learn: Machine Learning in Python
 ## Raul Garreta & Guillermo Mocecchi
 
+# n.b. to set up with matplotlib i had to do this first https://github.com/JuliaPy/PyCall.jl/issues/218
+
 ## IPython Notebook for Chapter 3: Unsupervised Learning - Clustering Handwritten Digits
 
 # Clustering involves finding groups where all elements in the group are similar, but objects in different groups are not.
